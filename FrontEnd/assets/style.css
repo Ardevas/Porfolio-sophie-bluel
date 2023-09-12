@@ -189,9 +189,6 @@ margin: auto;
 	border: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
-#contact input:hover {
-	background-color: black;
-}
 #contact label {
 	margin: 2em 0 1em 0;
 	font-size: 15px;
