@@ -1,5 +1,20 @@
-const gallery = document.querySelector(".gallery");
 const menu = document.getElementById("menu");
+
+const categoriesIds = [
+  { id: "all", name: "Tous" },
+  { id: "1", name: "Objets" },
+  { id: "2", name: "Appartements" },
+  { id: "3", name: "Hôtels & restaurants" }
+];
+
+categoriesIds.forEach((category) => {
+  const li = document.createElement("li");
+  li.id = category.id;
+  li.textContent = category.name;
+  menu.appendChild(li);
+});
+
+const gallery = document.querySelector(".gallery");
 const galleryCategories = menu.querySelectorAll("li[id]");
 
 let worksData = [];
@@ -69,3 +84,4 @@ function categoriesEventListeners() {
 }
 
 fetchCategories();
+
