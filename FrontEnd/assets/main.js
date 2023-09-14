@@ -1,5 +1,6 @@
 const menu = document.getElementById("menu");
 
+// #menu categories list
 const categoriesIds = [
   { id: "all", name: "Tous" },
   { id: "1", name: "Objets" },
@@ -7,6 +8,7 @@ const categoriesIds = [
   { id: "3", name: "Hôtels & restaurants" }
 ];
 
+// Create #menu categories button
 categoriesIds.forEach((category) => {
   const li = document.createElement("li");
   li.id = category.id;
