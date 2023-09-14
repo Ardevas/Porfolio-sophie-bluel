@@ -4,7 +4,7 @@ const galleryCategories = menu.querySelectorAll("li[id]");
 
 let worksData = [];
 let categoriesId = [];
-let selectedCategoryId = "0";
+let selectedCategoryId = "all";
 
 // Get categories data
 function fetchCategories() {
@@ -23,7 +23,7 @@ fetch("http://localhost:5678/api/works")
   worksData = works;
 
   // Display all images
-  selectedCategoryId = "0" ;
+  selectedCategoryId = "all" ;
   displayImagesByCategory();
 });
 
@@ -32,7 +32,7 @@ function displayImagesByCategory() {
   gallery.innerHTML = "";
 
   worksData.forEach((work) => {
-    if (selectedCategoryId === "0" || work.categoryId === selectedCategoryId) {
+    if (selectedCategoryId === "all" || work.categoryId === selectedCategoryId) {
       const figure = document.createElement("figure");
 
       const galleryImage = document.createElement("img");
@@ -54,8 +54,8 @@ function categoriesEventListeners() {
     li.addEventListener("click", function () {
       const clickedCategoryId = li.id;
   
-      if (clickedCategoryId === "0") {
-        selectedCategoryId = "0";
+      if (clickedCategoryId === "all") {
+        selectedCategoryId = "all";
       } else {
         const matchedCategory = categoriesId.find((category) => category.id.toString() === clickedCategoryId);
         if (matchedCategory) {

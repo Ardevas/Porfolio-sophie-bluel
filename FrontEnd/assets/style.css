@@ -49,15 +49,18 @@ table {
 }
 /** end reset css**/
 body {
-	max-width: 1140px;
-	margin:auto;
+
 	font-family: 'Work Sans' ;
 	font-size: 14px;
 }
 header {
 	display: flex;
 	justify-content: space-between;
-	margin: 50px -5.5rem;
+	margin: 50px 10%;
+}
+main {
+	max-width: 1140px;
+	margin:auto;
 }
 section {
 	margin: 50px 0;
@@ -102,9 +105,14 @@ nav li {
 nav li:hover {
 	font-weight: 900;
 	color: black;
+	cursor: pointer;
 }
 .headerLogo {
 	width: 1.375rem;
+}
+.headerLinks a {
+	text-decoration: none;
+    color: black;
 }
 #introduction {
 	display: flex;
@@ -215,6 +223,8 @@ footer nav ul {
 	justify-content: flex-end;
 	padding: 1.5rem;
 	background-color: white;
-	margin: 0rem -9.4rem;
 }
 
+footer nav li {
+	margin-right: 4rem;
+}
