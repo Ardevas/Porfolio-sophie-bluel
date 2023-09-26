@@ -49,9 +49,31 @@ table {
 }
 /** end reset css**/
 body {
-
 	font-family: 'Work Sans' ;
 	font-size: 14px;
+}
+.editBar {
+	display: flex;
+    background-color: black;
+    color: white;
+	justify-content: center;
+    align-items: center;
+	height: 3rem;
+	gap: 1rem;
+}
+.fa-pen-to-square {
+	width: 0.97375rem;
+	height: 0.97375rem;
+	flex-shrink: 0;
+}
+.editBar p {
+	font-size: 1rem;
+}
+.buttonChanges {
+	border-radius: 20px;
+	padding: 0.5rem 1.3rem;
+	font-weight: 600;
+	cursor: pointer;
 }
 header {
 	display: flex;
@@ -110,15 +132,17 @@ nav li:hover {
 .headerLogo {
 	width: 1.375rem;
 }
-.headerLinks a {
+a {
+	display: flex;
 	text-decoration: none;
     color: black;
+	width: fit-content;
 }
 #introduction {
 	display: flex;
 	align-items: center;
 	gap: 4.5rem;
-	margin: 8.69rem 0;
+	margin: 8.69rem 0 0;
 }
 #introduction figure {
 	flex: 1;
@@ -127,6 +151,7 @@ nav li:hover {
 	display: block;
 	margin: auto;
 	width: 100%;
+	margin-bottom: 1rem;
 }
 
 #introduction article {
@@ -135,14 +160,21 @@ nav li:hover {
 #introduction h2 {
 	margin-bottom: 1em;
 }
-
 #introduction p {
 	margin-bottom: 1.2em;
 }
-#portfolio h2 {
-	text-align: center;
-	margin-bottom: 2em;
-	margin-top: 8.5rem;
+.ButtonModifier {
+	display: flex;
+	gap: 0.5rem;
+	cursor: pointer;
+}
+#projectsTitle {
+	display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 4em;
+	margin-top: 8.69rem;
 }
 #portfolio ul {
 	display: flex;
@@ -175,7 +207,7 @@ nav li:hover {
 }
 #contact, #login {
 	width: 50%;
-margin: auto;
+	margin: auto;
 }
 #contact, #login  > * {
 	text-align: center;
@@ -190,12 +222,16 @@ margin: auto;
 	display: flex;
 	flex-direction: column;
 }
-
-#contact input, #login input {
+#contact form {
+	margin-left: 4rem;
+	margin-right: 4rem;
+}
+#contact input, #login input , #modalAdmin input, #modalAdd input{
 	height: 50px;
 	font-size: 1.2em;
 	border: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+	margin-bottom: 0.94rem;
 }
 #contact label, #login label {
 	margin: 2em 0 1em 0;
@@ -217,18 +253,6 @@ margin: auto;
 	border: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
-
-input[type="submit"]{
-	font-family: 'Syne';
-	font-weight: 700;
-	color: white;
-	background-color: #1D6154;
-	margin : 2em auto ;
-	width: 180px;
-	text-align: center;
-	border-radius: 60px ;
-}
-
 footer nav ul {
 	display: flex;
 	justify-content: flex-end;
@@ -244,3 +268,171 @@ position: absolute;
   bottom: 0;
   width: 100%;
 }
+
+.modal {
+	position: fixed;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.3);
+}
+
+.modalGallery, .modalAdd {
+	overflow: auto;
+	width: 630px;
+	height: 731px;
+	max-width: calc(100vw - 20px);
+	max-height: calc(100vw - 20px);
+	padding: 10px;
+	background-color: white;
+	border-radius: 10px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+#modalForm {
+	display: flex;
+	flex-direction: column;
+}
+#modalForm label {
+	margin-bottom: 0.63rem;
+}
+#modalAdd form {
+	display: flex;
+    flex-direction: column;
+}
+.modalAddIcons {
+	display: flex;
+}
+.modalAdd .fa-arrow-left {
+	display: flex;
+    color: black;
+    position: relative;
+    left: -17.5rem;
+    top: 1.2rem;
+    font-size: x-large;
+    cursor: pointer;
+}
+.modalGallery .fa-xmark, .modalAdd .fa-xmark {
+	display: flex;
+    color: black;
+    position: relative;
+    right: -17.5rem;
+    top: 1.2rem;
+    font-size: x-large;
+	cursor: pointer;
+}
+.modalGallery .fa-xmark {
+	right: -18.15rem;
+}
+#modalTitle {
+	display: flex;
+	justify-content: center;
+	color: black;
+	font-size: 26px;
+	margin-top: 1.8rem;
+}
+#modalCards, #modalForm{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.78rem;
+    margin: 2.8rem 4.7rem;
+    align-items: flex-start;
+}
+
+.modalCard {
+    position: relative;
+    width: calc(20% - 10px);
+    box-sizing: border-box;
+    text-align: center;
+    margin-bottom: 1rem;
+    overflow: hidden;
+}
+
+.modalCard img {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid lightgray;
+}
+
+.modalCard p {
+    font-size: 0.75rem;
+	text-align: initial;
+}
+.modalCard .fa-trash-can {
+	position: absolute;
+    top: 0.4rem;
+    right: 0.4rem;
+    color: white;
+    font-size: 0.7rem;
+    cursor: pointer;
+    background-color: black;
+    padding: 0.25rem;
+    border-radius: 2px;
+}
+.modalLine {
+	width: 30rem;
+    border-bottom: 1px solid #B3B3B3;
+	/* margin-bottom: 1rem; */
+}
+
+.button, .buttonSend, .buttonLogin{
+	display: flex;
+	justify-content: center;
+	width: 14.8rem;
+	cursor: pointer;
+	font-family: 'Syne';
+	color: white;
+	margin : 2em auto ;
+	border-radius: 60px ;
+}
+.modalGallery .button , .buttonSend, .buttonLogin {
+	background-color: #1D6154;
+}
+#forgotPassword {
+	text-decoration: underline;
+	margin-top: 1.5rem;
+}
+
+.modalAdd .button {
+	background-color: #A7A7A7;
+	width: 16.8rem;
+}
+.modalAdd .modalLine {
+	margin-top: 1.5rem;
+}
+#modalDelete {
+color: red;
+cursor: pointer;
+margin-top: 1rem;
+}
+#cardAddphoto {
+	margin-top: 2rem;
+	background-color: #E8F1F6;
+	border-radius: 4px;
+	margin: 2rem auto 0;
+    width: 76%;
+}
+#cardAddphoto .fa-image {
+	color: #CBD6DC;
+    position: relative;
+    right: -12.5rem;
+    top: 1.2rem;
+    font-size: 4.75rem;
+}
+#cardAddphoto .button {
+	color: #306685;
+	background-color: #CBD6DC;
+	font-family: Work Sans;
+	width: 50%;
+}
+#cardAddphoto p {
+	text-align: center;
+	font-size: 0.625rem;
+	position: relative;
+    bottom: 0.4rem;
+	margin-bottom: 1rem;

@@ -30,8 +30,9 @@
 			<input type="email" name="email" id="email">
 			<label for="password">Mot de passe</label>
 			<input type="password" name="password" id="password">
-			<input type="submit" value="Se connecter">
-			<p><a href="">Mot de passe oublié</a></p>
+			<p id="errorDisplay" style="display: none; color: red;"></p>
+			<input class="buttonLogin" type="submit" value="Se connecter">
+			<p><a id="forgotPassword" href="">Mot de passe oublié</a></p>
 		</form>
 	</section>
 </main>
@@ -42,6 +43,6 @@
 		</ul>
 	</nav>
 </footer>
-<script src="./assets/main.js"></script>
+<script src="./assets/login.js" defer></script>
 </body>
 </html>

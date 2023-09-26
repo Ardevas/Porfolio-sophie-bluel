@@ -8,13 +8,16 @@ const categoriesIds = [
   { id: "3", name: "Hôtels & restaurants" }
 ];
 
-// Create #menu categories button
+// Create #menu categories buttons
+function createCategories () {
 categoriesIds.forEach((category) => {
   const li = document.createElement("li");
   li.id = category.id;
   li.textContent = category.name;
   menu.appendChild(li);
 });
+}
+createCategories ();
 
 const gallery = document.querySelector(".gallery");
 const galleryCategories = menu.querySelectorAll("li[id]");
@@ -86,4 +89,3 @@ function categoriesEventListeners() {
 }
 
 fetchCategories();
-
