@@ -89,3 +89,37 @@ function categoriesEventListeners() {
 }
 
 fetchCategories();
+
+
+function logoutButton() {
+  const login = document.querySelector(".login");
+  login.textContent ="logout";
+  login.addEventListener("click", (e) => {
+    e.preventDefault();
+    sessionStorage.clear();
+    window.location.reload();
+  })
+}
+
+function loggedIn() {
+  const token = sessionStorage.getItem("token");
+  return token !== null;
+}
+
+const editBar = document.querySelector(".editBar");
+const buttonModifier = document.querySelectorAll(".ButtonModifier");
+
+// Display elements if logged or not
+if (loggedIn()) {
+  editBar.style.display = "flex";
+  logoutButton();
+  buttonModifier.forEach(button => {
+    button.style.display = "flex";})
+  menu.style.display = "none";
+} 
+else {
+  editBar.style.display = "none";
+  buttonModifier.forEach(button => {
+    button.style.display = "none";})
+  menu.style.display = "flex";
+};
