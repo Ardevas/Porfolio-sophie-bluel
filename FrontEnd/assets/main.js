@@ -41,10 +41,10 @@ fetch("http://localhost:5678/api/works")
   .then((response) => response.json())
   .then((works) => {
   worksData = works;
-
   // Display all images
-  selectedCategoryId = "all" ;
+  // selectedCategoryId = "all" ;
   displayImagesByCategory();
+  displayImagesInModal();
 });
 
 // Display images for selected category
@@ -106,6 +106,34 @@ function loggedIn() {
   return token !== null;
 }
 
+
+const modalCards = document.getElementById("modalCards");
+
+function displayImagesInModal() {
+  modalCards.innerHTML = "";
+
+  worksData.forEach((work) => {
+      const setModalCard = document.createElement("div");
+      setModalCard.classList.add("modalCard");
+
+      const galleryImage = document.createElement("img");
+      galleryImage.src = work.imageUrl;
+
+      const galleryLegend = document.createElement("p");
+      galleryLegend.innerText = "éditer";
+
+      const galleryTrash = document.createElement("i");
+      galleryTrash.classList.add("fas", "fa-trash-alt");
+
+      modalCards.appendChild(setModalCard);
+      setModalCard.appendChild(galleryTrash);
+      setModalCard.appendChild(galleryImage);
+      setModalCard.appendChild(galleryLegend);
+    })
+  };
+
+
+
 const editBar = document.querySelector(".editBar");
 const buttonModifier = document.querySelectorAll(".ButtonModifier");
 
@@ -116,6 +144,7 @@ if (loggedIn()) {
   buttonModifier.forEach(button => {
     button.style.display = "flex";})
   menu.style.display = "none";
+  displayImagesInModal();
 } 
 else {
   editBar.style.display = "none";
@@ -123,3 +152,5 @@ else {
     button.style.display = "none";})
   menu.style.display = "flex";
 };
+
+

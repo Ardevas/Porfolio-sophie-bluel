@@ -284,7 +284,6 @@ position: absolute;
 .modalGallery, .modalAdd {
 	overflow: auto;
 	width: 630px;
-	height: 731px;
 	max-width: calc(100vw - 20px);
 	max-height: calc(100vw - 20px);
 	padding: 10px;
@@ -363,7 +362,7 @@ position: absolute;
     font-size: 0.75rem;
 	text-align: initial;
 }
-.modalCard .fa-trash-can {
+.modalCard .fa-trash-alt {
 	position: absolute;
     top: 0.4rem;
     right: 0.4rem;
@@ -409,6 +408,7 @@ position: absolute;
 color: red;
 cursor: pointer;
 margin-top: 1rem;
+margin-bottom: 3rem;
 }
 #cardAddphoto {
 	margin-top: 2rem;

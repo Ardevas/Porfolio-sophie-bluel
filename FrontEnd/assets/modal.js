@@ -2,7 +2,7 @@ const openAdminModal = document.getElementById("openModalButton");
 const openAddModal = document.getElementById("openAddModal");
 const modalAdmin = document.getElementById("modalAdmin");
 const modalAdd = document.getElementById("modalAdd");
-const modalCard = modalCards.querySelector(".modalCard");
+const modalCard = document.getElementById("modalCards").querySelector(".modalCard");
 const closeIcon = portfolio.querySelectorAll(".fa-xmark");
 const backIcon = modalAdd.querySelector(".fa-arrow-left");
 
