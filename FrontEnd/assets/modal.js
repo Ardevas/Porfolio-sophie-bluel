@@ -35,13 +35,8 @@ backIcon.addEventListener("click", () => {
 
 // ModalAdmin close when click outside of it
 window.addEventListener("click", (e) => {
-    if (e.target === modalAdmin) {
+    if (e.target === modalAdmin || e.target === modalAdd) {
       modalAdmin.style.display = "none";
+      modalAdd.style.display = "none";
     }
 });
-
-// const trashIcon = modalCard.querySelectorAll(".fa-trash-can");
-
-// trashIcon.addEventListener("click", (e) => {
-
-// })
