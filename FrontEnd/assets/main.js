@@ -31,6 +31,24 @@ function createCategories() {
 }
 createCategories();
 
+const menuItems = document.querySelectorAll("#portfolio li");
+let activeMenuItem = null;
+
+menuItems.forEach((menuItem) => {
+  menuItem.addEventListener("click", () => {
+    // Remove "active" class from the previously active menu item
+    if (activeMenuItem) {
+      activeMenuItem.classList.remove("active");
+    }
+
+    // Add "active" class to the clicked menu item
+    menuItem.classList.add("active");
+
+    // Set the current clicked menu item as the active one
+    activeMenuItem = menuItem;
+  });
+});
+
 const gallery = document.querySelector(".gallery");
 const galleryCategories = menu.querySelectorAll("li[id]");
 
@@ -39,25 +57,32 @@ let categoriesId = [];
 let selectedCategoryId = "all";
 
 // Get categories data
-function fetchCategories() {
-    fetch("http://localhost:5678/api/categories")
-        .then((response) => response.json())
-        .then((categories) => {
-            categoriesId = categories;
-            categoriesEventListeners();
-        });
+async function fetchCategories() {
+    try {
+        const response = await fetch("http://localhost:5678/api/categories");
+        const categories = await response.json();
+        categoriesId = categories;
+        categoriesEventListeners();
+    } catch (error) {
+        console.error("An error occurred:", error);
+    }
 }
 
-// Get works data
-fetch("http://localhost:5678/api/works")
-    .then((response) => response.json())
-    .then((works) => {
+// Function to fetch works data
+async function fetchWorksData() {
+    try {
+        const response = await fetch("http://localhost:5678/api/works");
+        const works = await response.json();
         worksData = works;
         // Display all images
-        // selectedCategoryId = "all" ;
         displayImagesByCategory();
         displayImagesInModal();
-    });
+    } catch (error) {
+        console.error("An error occurred:", error);
+    }
+}
+
+fetchWorksData();
 
 // Display images for selected category
 function displayImagesByCategory() {
@@ -127,6 +152,7 @@ function displayImagesInModal() {
     worksData.forEach((work) => {
         const setModalCard = document.createElement("div");
         setModalCard.classList.add("modalCard");
+        setModalCard.setAttribute("data-image-id", work.id);
 
         const galleryImage = document.createElement("img");
         galleryImage.src = work.imageUrl;
@@ -138,60 +164,74 @@ function displayImagesInModal() {
         galleryTrash.classList.add("fas", "fa-trash-alt");
         galleryTrash.addEventListener("click", (e) => {
             e.preventDefault();
-            console.log("Trash clicked")
-            // Get index from selected modalCard 
-            const indexCard = Array.from(modalCards.children).indexOf(setModalCard);
-
-            modalCards.removeChild(setModalCard);
-
-            deleteImageAPI(work.id);
-
-            // Remove selected (trash icon) image from modalAdmin
-            worksData.splice(indexCard, 1);
+            console.log("Trash clicked");
+            const imageId = work.id;
+            deleteImageFromModal(imageId, e);
         });
 
         modalCards.appendChild(setModalCard);
         setModalCard.appendChild(galleryTrash);
         setModalCard.appendChild(galleryImage);
         setModalCard.appendChild(galleryLegend);
-    })
+    });
 }
 
-// Remove selected image from API
-function deleteImageAPI(imageId) {
-    fetch(`http://localhost:5678/api/works/${imageId}`, {
+// Delete image function from modalAdmin and API
+async function deleteImageFromModal(imageId, e) {
+    try {
+        const index = worksData.findIndex((work) => work.id === imageId);
+
+        if (index !== -1) {
+            worksData.splice(index, 1);
+
+            const modalCard = modalCards.querySelector(`[data-image-id="${imageId}"]`);
+            modalCard.remove();
+
+            await deleteImageAPI(imageId);
+
+            console.log(`Image with ID ${imageId} successfully deleted.`);
+        }
+    } catch (error) {
+        console.error("Error deleting image : ", error);
+    }
+    e.preventDefault();
+}
+
+// Function to delete an image from API
+async function deleteImageAPI(imageId) {
+    try {
+        const response = await fetch(`http://localhost:5678/api/works/${imageId}`, {
             method: "DELETE",
             headers: {
                 Authorization: `Bearer ${token}`,
             },
-        })
-        .then((response) => {
-            if (response.ok) {
-                console.log("Image ID ${imageId} successfully removed from the API.");
-            } else {
-                console.error("Error deleting image from the API");
-            }
-        })
-        .catch((error) => {
-            console.error("Error deleting image from API : ", error);
         });
-}
 
+        if (response.ok) {
+            console.log(`Image avec ID ${imageId} supprimée avec succès de l'API.`);
+        } else {
+            console.error("Error removing image from API");
+        }
+    } catch (error) {
+        console.error("Error removing image from API : ", error);
+    }
+}
 
 const imageUploadForm = document.getElementById("imageUploadForm");
 
-imageUploadForm.addEventListener("submit", (e) => {
+
+imageUploadForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
     const formData = new FormData(imageUploadForm);
 
     // Get form values
     const title = formData.get("name");
-    const categoryName = formData.get("category"); // Obtenir la catégorie en tant que chaîne
+    const categoryName = formData.get("category");
     const imageFile = formData.get("image");
     console.log("imageFile: ", imageFile);
 
-    // Find  matching ID in categoriesIds
+    // Find matching ID in categoriesIds
     const selectedCategory = categoriesIds.find((category) => category.name === categoryName);
 
     // Check the category
@@ -204,13 +244,24 @@ imageUploadForm.addEventListener("submit", (e) => {
         data.append("image", imageFile, imageFile.name);
         data.append("category", categoryId);
 
-        // Check values
-        console.log("Title:", title);
-        console.log("Category:", categoryId);
-        console.log("Image file name:", imageFile.name);
-
         // Call addImageAPI function to add image to API
-        addImageAPI(data);
+        try {
+            const response = await fetch("http://localhost:5678/api/works", {
+                method: "POST",
+                body: data,
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            if (response.ok) {
+                console.log("Image successfully added to API.");
+            } else {
+                console.error("Error adding image to API.");
+            }
+        } catch (error) {
+            console.error("Error adding image to API: ", error);
+        }
     } else {
         console.error("Category is invalid.");
     }
@@ -274,28 +325,63 @@ function showPreview(event) {
 const addButton = document.getElementById("imageAddButton");
 
 // Trigger on the fileInput
-addButton.addEventListener('click', function(e) {
+addButton.addEventListener("click", function(e) {
     e.preventDefault();
     fileInput.click();
 });
 
 // Function to add an image to API
-function addImageAPI(formData) {
-    fetch("http://localhost:5678/api/works", {
+async function addImageAPI(formData) {
+    try {
+        const response = await fetch("http://localhost:5678/api/works", {
             method: "POST",
             body: formData,
             headers: {
                 Authorization: `Bearer ${token}`,
             },
-        })
-        .then((response) => {
-            if (response.ok) {
-                console.log("Image successfully added to API.");
-            } else {
-                console.error("Error adding image to API.");
-            }
-        })
-        .catch((error) => {
-            console.error("Error adding image to API : ", error);
         });
+
+        if (response.ok) {
+            console.log("Image successfully added to API.");
+        } else {
+            console.error("Error adding image to API.");
+        }
+    } catch (error) {
+        console.error("Error adding image to API: ", error);
+    }
 }
+
+
+const imageInput = document.getElementById("image");
+const titleInput = document.getElementById("name");
+const categoryInput = document.getElementById("category");
+const button = document.querySelector(".buttonSubmit");
+
+// Function to check if all required fields are filled
+function checkFields() {
+  const imageFilled = imageInput.files.length > 0;
+  const titleFilled = titleInput.value.trim() !== "";
+  const categoryFilled = categoryInput.value.trim() !== "";
+
+  console.log(imageFilled);
+  console.log(titleFilled);
+  console.log(categoryFilled);
+
+  // Enable the "Valider" button if all fields are filled, otherwise, disable it
+  if (imageFilled && titleFilled && categoryFilled) {
+    button.classList.add("active");
+    console.log("active");
+  } else {
+    button.classList.remove("active");
+    console.log("not active");
+  }
+}
+
+// Add event listeners to input fields
+imageInput.addEventListener("change", checkFields);
+titleInput.addEventListener("input", checkFields);
+categoryInput.addEventListener("input", checkFields);
+
+// Initially, check if fields are filled
+checkFields();
+
