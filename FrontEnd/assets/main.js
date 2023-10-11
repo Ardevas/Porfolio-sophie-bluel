@@ -49,6 +49,10 @@ menuItems.forEach((menuItem) => {
   });
 });
 
+// Simulate a click on "All" filter when main page loads
+const tousFilter = document.getElementById("all");
+tousFilter.click();
+
 const gallery = document.querySelector(".gallery");
 const galleryCategories = menu.querySelectorAll("li[id]");
 
