@@ -418,6 +418,15 @@ footer nav li {
   font-size: x-large;
   cursor: pointer;
 }
+#confirmationMessage {
+  display: none;
+  color: #1d6154;
+  text-align: center;
+  padding: 10px;
+  position: relative;
+  top: 76%;
+  left: 24%;
+}
 .modalGallery .fa-xmark {
   right: -18.15rem;
 }

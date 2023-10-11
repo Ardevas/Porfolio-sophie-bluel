@@ -91,6 +91,7 @@ function displayImagesByCategory() {
     worksData.forEach((work) => {
         if (selectedCategoryId === "all" || work.categoryId === selectedCategoryId) {
             const figure = document.createElement("figure");
+            figure.setAttribute("data-image-id", work.id);
 
             const galleryImage = document.createElement("img");
             galleryImage.src = work.imageUrl;
@@ -150,7 +151,7 @@ function displayImagesInModal() {
     modalCards.innerHTML = "";
 
     worksData.forEach((work) => {
-        const setModalCard = document.createElement("div");
+        const setModalCard = document.createElement("figure");
         setModalCard.classList.add("modalCard");
         setModalCard.setAttribute("data-image-id", work.id);
 
@@ -164,11 +165,9 @@ function displayImagesInModal() {
         galleryTrash.classList.add("fas", "fa-trash-alt");
         galleryTrash.addEventListener("click", (e) => {
             e.preventDefault();
-            console.log("Trash clicked");
             const imageId = work.id;
             deleteImageFromModal(imageId, e);
         });
-
         modalCards.appendChild(setModalCard);
         setModalCard.appendChild(galleryTrash);
         setModalCard.appendChild(galleryImage);
@@ -187,10 +186,12 @@ async function deleteImageFromModal(imageId, e) {
             const modalCard = modalCards.querySelector(`[data-image-id="${imageId}"]`);
             modalCard.remove();
 
-            await deleteImageAPI(imageId);
+            const galleryFigure = gallery.querySelector(`[data-image-id="${imageId}"]`);
+            galleryFigure.remove();
+            }
 
-            console.log(`Image with ID ${imageId} successfully deleted.`);
-        }
+        await deleteImageAPI(imageId);
+
     } catch (error) {
         console.error("Error deleting image : ", error);
     }
@@ -206,19 +207,56 @@ async function deleteImageAPI(imageId) {
                 Authorization: `Bearer ${token}`,
             },
         });
-
-        if (response.ok) {
-            console.log(`Image avec ID ${imageId} supprimée avec succès de l'API.`);
-        } else {
-            console.error("Error removing image from API");
-        }
     } catch (error) {
         console.error("Error removing image from API : ", error);
     }
 }
 
-const imageUploadForm = document.getElementById("imageUploadForm");
+// Create confirmation message DOM element
+const confirmationMessage = document.createElement("div");
+confirmationMessage.id = "confirmationMessage";
+const modalForm = document.getElementById("modalForm");
+modalForm.appendChild(confirmationMessage);
 
+// Confirmation message for image upload to API
+function showConfirmationMessage(message, imageUrl, title) {
+    const confirmationMessage = document.getElementById("confirmationMessage");
+    confirmationMessage.textContent = message;
+    confirmationMessage.style.display = "flex"; // Pour le rendre visible
+
+    // Display a message for X seconds
+    setTimeout(function () {
+        confirmationMessage.style.display = "none";
+    }, 4000);
+
+    // Update gallery
+    updateGallery(imageUrl, title);
+
+    // Update modalAdmin
+    fetchWorksData();
+}
+
+// Update main gallery with new image
+function updateGallery(imageUrl, title) {
+    const gallery = document.querySelector(".gallery");
+
+    // Create figure and legend
+    const newFigure = document.createElement("figure");
+
+    const newImage = document.createElement("img");
+    newImage.src = imageUrl;
+
+    const newLegend = document.createElement("figcaption");
+    newLegend.innerText = title;
+
+    // Add new image to the DOM
+    newFigure.appendChild(newImage);
+    newFigure.appendChild(newLegend);
+    gallery.appendChild(newFigure);
+}
+
+
+const imageUploadForm = document.getElementById("imageUploadForm");
 
 imageUploadForm.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -229,7 +267,6 @@ imageUploadForm.addEventListener("submit", async (e) => {
     const title = formData.get("name");
     const categoryName = formData.get("category");
     const imageFile = formData.get("image");
-    console.log("imageFile: ", imageFile);
 
     // Find matching ID in categoriesIds
     const selectedCategory = categoriesIds.find((category) => category.name === categoryName);
@@ -255,7 +292,8 @@ imageUploadForm.addEventListener("submit", async (e) => {
             });
 
             if (response.ok) {
-                console.log("Image successfully added to API.");
+                showConfirmationMessage("L'image a été ajoutée avec succès.", URL.createObjectURL(imageFile), title);
+                displayImagesInModal();
             } else {
                 console.error("Error adding image to API.");
             }
@@ -290,7 +328,6 @@ if (loggedIn()) {
 
 // Select fileInput
 const fileInput = document.getElementById("image");
-console.log("File Input: ", fileInput);
 
 // Select imagePreview
 const imagePreview = document.getElementById("imagePreview");
@@ -330,28 +367,6 @@ addButton.addEventListener("click", function(e) {
     fileInput.click();
 });
 
-// Function to add an image to API
-async function addImageAPI(formData) {
-    try {
-        const response = await fetch("http://localhost:5678/api/works", {
-            method: "POST",
-            body: formData,
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
-
-        if (response.ok) {
-            console.log("Image successfully added to API.");
-        } else {
-            console.error("Error adding image to API.");
-        }
-    } catch (error) {
-        console.error("Error adding image to API: ", error);
-    }
-}
-
-
 const imageInput = document.getElementById("image");
 const titleInput = document.getElementById("name");
 const categoryInput = document.getElementById("category");
@@ -363,17 +378,11 @@ function checkFields() {
   const titleFilled = titleInput.value.trim() !== "";
   const categoryFilled = categoryInput.value.trim() !== "";
 
-  console.log(imageFilled);
-  console.log(titleFilled);
-  console.log(categoryFilled);
-
   // Enable the "Valider" button if all fields are filled, otherwise, disable it
   if (imageFilled && titleFilled && categoryFilled) {
     button.classList.add("active");
-    console.log("active");
   } else {
     button.classList.remove("active");
-    console.log("not active");
   }
 }
 
