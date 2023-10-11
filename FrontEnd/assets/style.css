@@ -430,7 +430,8 @@ footer nav li {
 .modalGallery .fa-xmark {
   right: -18.15rem;
 }
-#modalTitle {
+#modalAdminTitle,
+#modalAddTitle {
   display: flex;
   justify-content: center;
   color: black;

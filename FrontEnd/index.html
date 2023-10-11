@@ -38,7 +38,7 @@
       </nav>
     </header>
     <main>
-      <section id="introduction">
+      <div id="introduction">
         <figure>
           <img src="./assets/images/sophie-bluel.png" alt="Portrait de Sophie Bluel dans un lieu arboré">
         </figure>
@@ -48,7 +48,7 @@
           <p>Chaque projet sera étudié en commun, de façon à mettre en valeur les volumes, les matières et les couleurs dans le respect de l’esprit des lieux et le choix adapté des matériaux. Le suivi du chantier sera assuré dans le souci du détail, le respect du planning et du budget.</p>
           <p>En cas de besoin, une équipe pluridisciplinaire peut-être constituée : architecte DPLG, décorateur(trice).</p>
         </article>
-      </section>
+      </div>
       <a class="ButtonModifier">
         <i class="fa-regular fa-pen-to-square"></i>
         <p>modifier</p>
@@ -61,36 +61,36 @@
             <p>modifier</p>
           </a>
         </div>
-        <aside id="modalAdmin" class="modal" aria-hidden="true" role="dialog" aria-modal="false" aria-labelledby="modalTitle">
+        <aside id="modalAdmin" class="modal" aria-hidden="true" aria-labelledby="modalAdminTitle">
           <div class="modalGallery">
             <i class="fa-solid fa-xmark"></i>
-            <h3 id="modalTitle">Galerie photo</h3>
+            <h3 id="modalAdminTitle">Galerie photo</h3>
             <div id="modalCards"></div>
             <div class="modalLine"></div>
             <input class="button" id="openAddModal" type="submit" value="Ajouter une photo">
             <p id="modalDelete">Supprimer la galerie</p>
           </div>
         </aside>
-        <aside id="modalAdd" class="modal" aria-hidden="true" role="dialog" aria-modal="false" aria-labelledby="modalTitle">
+        <aside id="modalAdd" class="modal" aria-hidden="true" aria-labelledby="modalAddTitle">
           <div class="modalAdd">
             <div class="modalAddIcons">
               <i class="fa-solid fa-arrow-left"></i>
               <i class="fa-solid fa-xmark"></i>
             </div>
-            <h3 id="modalTitle">Ajout photo</h3>
+            <h3 id="modalAddTitle">Ajout photo</h3>
             <div id="modalForm">
               <form id="imageUploadForm" action="#" method="post">
                 <div id="cardAddphoto">
                   <i class="fa-regular fa-image"></i>
-                  <label id="imageAddButton" class="button" for="imageUpload">+ Ajouter photo</label>
+                  <label id="imageAddButton" class="button" for="image">+ Ajouter photo</label>
                   <div id="imagePreviewContainer">
-                    <img type="file" name="imagePreview" id="imagePreview" src="#" alt="Aperçu de l'image" />
+                    <img id="imagePreview" src="#" alt="Aperçu de l'image" />
                   </div>
                   <input type="file" name="image" id="image" accept=".jpg, .png" required style="display: none;">
                   <p>jpg, png : 4mo max</p>
                 </div>
-                <label for="name">Titre</label>
-                <input type="text" name="name" id="name" list="name">
+                <label for="title">Titre</label>
+                <input type="text" name="name" id="title" class="title">
                 <label for="category">Catégorie</label>
                 <input type="text" name="category" id="category" list="categoryList">
                 <datalist id="categoryList">
@@ -112,7 +112,7 @@
         <p>Vous avez un projet ? Discutons-en !</p>
         <form action="#" method="post">
           <label for="name">Nom</label>
-          <input type="text" name="name" id="name">
+          <input type="text" name="name" id="name" class="name">
           <label for="email">E-mail</label>
           <input type="email" name="email" id="email">
           <label for="message">Message</label>

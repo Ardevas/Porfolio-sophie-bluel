@@ -35,18 +35,18 @@ const menuItems = document.querySelectorAll("#portfolio li");
 let activeMenuItem = null;
 
 menuItems.forEach((menuItem) => {
-  menuItem.addEventListener("click", () => {
-    // Remove "active" class from the previously active menu item
-    if (activeMenuItem) {
-      activeMenuItem.classList.remove("active");
-    }
+    menuItem.addEventListener("click", () => {
+        // Remove "active" class from the previously active menu item
+        if (activeMenuItem) {
+            activeMenuItem.classList.remove("active");
+        }
 
-    // Add "active" class to the clicked menu item
-    menuItem.classList.add("active");
+        // Add "active" class to the clicked menu item
+        menuItem.classList.add("active");
 
-    // Set the current clicked menu item as the active one
-    activeMenuItem = menuItem;
-  });
+        // Set the current clicked menu item as the active one
+        activeMenuItem = menuItem;
+    });
 });
 
 // Simulate a click on "All" filter when main page loads
@@ -192,7 +192,7 @@ async function deleteImageFromModal(imageId, e) {
 
             const galleryFigure = gallery.querySelector(`[data-image-id="${imageId}"]`);
             galleryFigure.remove();
-            }
+        }
 
         await deleteImageAPI(imageId);
 
@@ -229,7 +229,7 @@ function showConfirmationMessage(message, imageUrl, title) {
     confirmationMessage.style.display = "flex"; // Pour le rendre visible
 
     // Display a message for X seconds
-    setTimeout(function () {
+    setTimeout(function() {
         confirmationMessage.style.display = "none";
     }, 4000);
 
@@ -372,22 +372,22 @@ addButton.addEventListener("click", function(e) {
 });
 
 const imageInput = document.getElementById("image");
-const titleInput = document.getElementById("name");
+const titleInput = document.querySelector(".title");
 const categoryInput = document.getElementById("category");
 const button = document.querySelector(".buttonSubmit");
 
 // Function to check if all required fields are filled
 function checkFields() {
-  const imageFilled = imageInput.files.length > 0;
-  const titleFilled = titleInput.value.trim() !== "";
-  const categoryFilled = categoryInput.value.trim() !== "";
+    const imageFilled = imageInput.files.length > 0;
+    const titleFilled = titleInput.value.trim() !== "";
+    const categoryFilled = categoryInput.value.trim() !== "";
 
-  // Enable the "Valider" button if all fields are filled, otherwise, disable it
-  if (imageFilled && titleFilled && categoryFilled) {
-    button.classList.add("active");
-  } else {
-    button.classList.remove("active");
-  }
+    // Enable the "Valider" button if all fields are filled, otherwise, disable it
+    if (imageFilled && titleFilled && categoryFilled) {
+        button.classList.add("active");
+    } else {
+        button.classList.remove("active");
+    }
 }
 
 // Add event listeners to input fields
@@ -397,4 +397,3 @@ categoryInput.addEventListener("input", checkFields);
 
 // Initially, check if fields are filled
 checkFields();
-
