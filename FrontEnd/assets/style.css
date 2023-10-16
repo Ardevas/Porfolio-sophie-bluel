@@ -1,89 +1,5 @@
-/* http://meyerweb.com/eric/tools/css/reset/
-   v2.0 | 20110126
-   License: none (public domain)
-*/
-
-html,
-body,
-div,
-span,
-applet,
-object,
-iframe,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p,
-blockquote,
-pre,
-a,
-abbr,
-acronym,
-address,
-big,
-cite,
-code,
-del,
-dfn,
-em,
-img,
-ins,
-kbd,
-q,
-s,
-samp,
-small,
-strike,
-strong,
-sub,
-sup,
-tt,
-var,
-b,
-u,
-i,
-center,
-dl,
-dt,
-dd,
-ol,
-ul,
-li,
-fieldset,
-form,
-label,
-legend,
-table,
-caption,
-tbody,
-tfoot,
-thead,
-tr,
-th,
-td,
-article,
-aside,
-canvas,
-details,
-embed,
-figure,
-figcaption,
-footer,
-header,
-hgroup,
-menu,
-nav,
-output,
-ruby,
-section,
-summary,
-time,
-mark,
-audio,
-video {
+/* http://meyerweb.com/eric/tools/css/reset/ v2.0 | 20110126 License: none (public domain) */
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
   margin: 0;
   padding: 0;
   border: 0;
@@ -92,35 +8,20 @@ video {
   vertical-align: baseline;
 }
 /* HTML5 display-role reset for older browsers */
-article,
-aside,
-details,
-figcaption,
-figure,
-footer,
-header,
-hgroup,
-menu,
-nav,
-section {
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
   display: block;
 }
 body {
   line-height: 1;
   background-color: #fffef8;
 }
-ol,
-ul {
+ol, ul {
   list-style: none;
 }
-blockquote,
-q {
+blockquote, q {
   quotes: none;
 }
-blockquote:before,
-blockquote:after,
-q:before,
-q:after {
+blockquote:before, blockquote:after, q:before, q:after {
   content: "";
   content: none;
 }
@@ -179,7 +80,6 @@ h1 {
   font-weight: 800;
   color: #b1663c;
 }
-
 h1 > span {
   font-family: "Work Sans";
   font-size: 10px;
@@ -187,9 +87,7 @@ h1 > span {
   font-weight: 500;
   margin-top: 0.5rem;
 }
-
-h2,
-#portfolio li {
+h2, #portfolio li {
   font-family: "Syne";
   font-weight: 700;
   font-size: 30px;
@@ -234,7 +132,6 @@ a {
   width: 100%;
   margin-bottom: 1rem;
 }
-
 #introduction article {
   flex: 1;
 }
@@ -263,9 +160,7 @@ a {
   gap: 1rem;
   margin-bottom: 3.5rem;
 }
-#portfolio li:hover,
-#portfolio li.active,
-.buttonSubmit.active {
+#portfolio li:hover, #portfolio li.active, .buttonSubmit.active {
   color: white;
   background-color: #1d6154;
   cursor: pointer;
@@ -283,27 +178,22 @@ a {
   grid-column-gap: 20px;
   grid-row-gap: 20px;
 }
-
 .gallery img {
   width: 100%;
   padding-bottom: 0.5rem;
   height: 95%;
 }
-#contact,
-#login {
+#contact, #login {
   width: 50%;
   margin: auto;
 }
-#contact,
-#login > * {
+#contact, #login > * {
   text-align: center;
 }
-#contact h2,
-#login h2 {
+#contact h2, #login h2 {
   margin-bottom: 20px;
 }
-#contact form,
-#login form {
+#contact form, #login form {
   text-align: left;
   margin-top: 30px;
   display: flex;
@@ -313,18 +203,14 @@ a {
   margin-left: 4rem;
   margin-right: 4rem;
 }
-#contact input,
-#login input,
-#modalAdmin input,
-#modalAdd input {
+#contact input, #login input, #modalAdmin input, #modalAdd input {
   height: 50px;
   font-size: 1.2em;
   border: none;
   box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
   margin-bottom: 0.94rem;
 }
-#contact label,
-#login label {
+#contact label, #login label {
   margin: 2em 0 1em 0;
   font-size: 15px;
   font-weight: 600;
@@ -350,7 +236,6 @@ footer nav ul {
   padding: 1.5rem;
   background-color: white;
 }
-
 footer nav li {
   margin-right: 4rem;
 }
@@ -359,7 +244,6 @@ footer nav li {
   bottom: 0;
   width: 100%;
 }
-
 .modal {
   position: fixed;
   display: flex;
@@ -371,9 +255,7 @@ footer nav li {
   height: 100%;
   background: rgba(0, 0, 0, 0.3);
 }
-
-.modalGallery,
-.modalAdd {
+.modalGallery, .modalAdd {
   overflow: auto;
   width: 630px;
   max-width: calc(100vw - 20px);
@@ -408,8 +290,7 @@ footer nav li {
   font-size: x-large;
   cursor: pointer;
 }
-.modalGallery .fa-xmark,
-.modalAdd .fa-xmark {
+.modalGallery .fa-xmark, .modalAdd .fa-xmark {
   display: flex;
   color: black;
   position: relative;
@@ -430,23 +311,20 @@ footer nav li {
 .modalGallery .fa-xmark {
   right: -18.15rem;
 }
-#modalAdminTitle,
-#modalAddTitle {
+#modalAdminTitle, #modalAddTitle {
   display: flex;
   justify-content: center;
   color: black;
   font-size: 26px;
   margin-top: 1.8rem;
 }
-#modalCards,
-#modalForm {
+#modalCards, #modalForm {
   display: flex;
   flex-wrap: wrap;
   gap: 0.78rem;
   margin: 2.8rem 4.7rem;
   align-items: flex-start;
 }
-
 .modalCard {
   position: relative;
   width: calc(20% - 10px);
@@ -455,13 +333,11 @@ footer nav li {
   margin-bottom: 1rem;
   overflow: hidden;
 }
-
 .modalCard img {
   max-width: 100%;
   height: auto;
   border: 1px solid lightgray;
 }
-
 .modalCard p {
   font-size: 0.75rem;
   text-align: initial;
@@ -480,13 +356,13 @@ footer nav li {
 .modalLine {
   width: 30rem;
   border-bottom: 1px solid #b3b3b3;
-  /* margin-bottom: 1rem; */
+ /* margin-bottom: 1rem;
+  */
 }
-
-.button,
-.buttonSend,
-.buttonLogin,
-.buttonSubmit {
+.modalGallery .button, .buttonSend, .buttonLogin {
+  background-color: #1d6154;
+}
+.button, .buttonSend, .buttonLogin, .buttonSubmit {
   display: flex;
   justify-content: center;
   width: 14.8rem;
@@ -496,16 +372,10 @@ footer nav li {
   margin: 2em auto;
   border-radius: 60px;
 }
-.modalGallery .button,
-.buttonSend,
-.buttonLogin {
-  background-color: #1d6154;
-}
 #forgotPassword {
   text-decoration: underline;
   margin-top: 1.5rem;
 }
-
 .buttonSubmit {
   background-color: #a7a7a7;
   width: 16.8rem;
@@ -550,19 +420,16 @@ footer nav li {
   bottom: 0.4rem;
   margin-bottom: 1rem;
 }
-
 #imagePreviewContainer {
   overflow: hidden;
   max-height: 100%;
   justify-content: center;
 }
-
 #imagePreview {
   max-width: 100%;
   max-height: 12rem;
   display: none;
 }
-
 .hidden {
   display: none;
 }

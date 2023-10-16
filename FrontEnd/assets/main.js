@@ -1,6 +1,3 @@
-const menu = document.getElementById("menu");
-const token = sessionStorage.getItem("token");
-
 // #menu categories list
 const categoriesIds = [{
         id: "all",
@@ -21,9 +18,11 @@ const categoriesIds = [{
 ];
 
 // Create #menu categories buttons
+const menu = document.getElementById("menu");
 function createCategories() {
     categoriesIds.forEach((category) => {
         const li = document.createElement("li");
+        // Retrieve id and name from categoriesIds to set id and textContent of li
         li.id = category.id;
         li.textContent = category.name;
         menu.appendChild(li);
@@ -31,6 +30,7 @@ function createCategories() {
 }
 createCategories();
 
+// #menu categories buttons event listeners
 const menuItems = document.querySelectorAll("#portfolio li");
 let activeMenuItem = null;
 
@@ -53,26 +53,32 @@ menuItems.forEach((menuItem) => {
 const tousFilter = document.getElementById("all");
 tousFilter.click();
 
-const gallery = document.querySelector(".gallery");
-const galleryCategories = menu.querySelectorAll("li[id]");
-
+// Empty array, store working data and images
 let worksData = [];
+// Same as up, store categories id
 let categoriesId = [];
+// Define starting selectedCategoryId
 let selectedCategoryId = "all";
 
-// Get categories data
+// Function to fetch categories data from API 
 async function fetchCategories() {
     try {
+        // Fetch categories data from API
         const response = await fetch("http://localhost:5678/api/categories");
+        // Convert response to JSON
         const categories = await response.json();
+        // Store categories data in categoriesId who's an array
         categoriesId = categories;
         categoriesEventListeners();
     } catch (error) {
+        // If an error occurs, log it in the console
         console.error("An error occurred:", error);
     }
 }
 
-// Function to fetch works data
+fetchCategories();
+
+// Function to fetch works data from API
 async function fetchWorksData() {
     try {
         const response = await fetch("http://localhost:5678/api/works");
@@ -88,19 +94,24 @@ async function fetchWorksData() {
 
 fetchWorksData();
 
-// Display images for selected category
+// Display images by category function
+const gallery = document.querySelector(".gallery");
 function displayImagesByCategory() {
+    // Empty gallery
     gallery.innerHTML = "";
 
+    // Display images for selected category
     worksData.forEach((work) => {
         if (selectedCategoryId === "all" || work.categoryId === selectedCategoryId) {
             const figure = document.createElement("figure");
             figure.setAttribute("data-image-id", work.id);
 
             const galleryImage = document.createElement("img");
+            // Set image source
             galleryImage.src = work.imageUrl;
 
             const galleryLegend = document.createElement("figcaption");
+            // Set image title
             galleryLegend.innerText = work.title;
 
             gallery.appendChild(figure);
@@ -111,14 +122,17 @@ function displayImagesByCategory() {
 }
 
 // Categories event listener function
+const galleryCategories = menu.querySelectorAll("li[id]");
 function categoriesEventListeners() {
     galleryCategories.forEach((li) => {
         li.addEventListener("click", function(e) {
             e.preventDefault();
             const clickedCategoryId = li.id;
 
+            // If "All" is clicked, set selectedCategoryId to "all"
             if (clickedCategoryId === "all") {
                 selectedCategoryId = "all";
+            // Find matching category in categoriesId
             } else {
                 const matchedCategory = categoriesId.find((category) => category.id.toString() === clickedCategoryId);
                 if (matchedCategory) {
@@ -131,20 +145,23 @@ function categoriesEventListeners() {
     });
 }
 
-fetchCategories();
-
-
+// Logout function
 function logoutButton() {
     const login = document.querySelector(".login");
+    // Change textContent of login button
     login.textContent = "logout";
     login.addEventListener("click", (e) => {
         e.preventDefault();
+        // Clear sessionStorage and reload page
         sessionStorage.clear();
         window.location.reload();
-    })
+    });
 }
 
+// Check if user is logged in
+const token = sessionStorage.getItem("token");
 function loggedIn() {
+    // Return true if token is not null
     return token !== null;
 }
 
@@ -259,7 +276,6 @@ function updateGallery(imageUrl, title) {
     gallery.appendChild(newFigure);
 }
 
-
 const imageUploadForm = document.getElementById("imageUploadForm");
 
 imageUploadForm.addEventListener("submit", async (e) => {
@@ -341,7 +357,7 @@ fileInput.addEventListener("change", showPreview);
 
 // Define showPreview function
 function showPreview(event) {
-    if (event.target.files.length > 0) {
+    if (event.target.files.length > 0 && event.target.files.size < 4194304) {
         const src = URL.createObjectURL(event.target.files[0]);
         const preview = document.getElementById("imagePreview");
         const cardAddphoto = document.getElementById("cardAddphoto");
@@ -351,9 +367,9 @@ function showPreview(event) {
         preview.src = src;
         preview.style.display = "block";
 
-        // Hide children of cardAddphoto (text and icon)
-        var children = cardAddphoto.children;
-        for (var i = 0; i < children.length; i++) {
+        // Hide children cardAddphoto text and icon
+        const children = cardAddphoto.children;
+        for (i = 0; i < children.length; i++) {
             if (children[i].id !== "imagePreview") {
                 children[i].style.display = "none";
             }
@@ -397,3 +413,26 @@ categoryInput.addEventListener("input", checkFields);
 
 // Initially, check if fields are filled
 checkFields();
+
+// Check if file is valid
+fileInput.addEventListener("change", function (e) {
+    const selectedFile = fileInput.files[0];
+
+    if (selectedFile) {
+        // Check the file type (only jpg and png are allowed)
+        if (!/\.(jpg|jpeg|png)$/i.test(selectedFile.name)) {
+            alert("Veuillez sélectionner un fichier .jpg ou .png valide.");
+            // Erase the file input field (clear form)
+            imageUploadForm.reset();
+            return;
+        }
+
+        // Check the file size (less than 4 Mo)
+        if (selectedFile.size > 4194304) {
+            alert("La taille du fichier ne doit pas dépasser 4 Mo.");
+            // Erase the file input field (clear form)
+            imageUploadForm.reset();
+            return;
+        }
+    }
+});
