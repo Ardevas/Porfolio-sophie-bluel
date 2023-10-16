@@ -202,13 +202,13 @@ async function deleteImageFromModal(imageId, e) {
         const index = worksData.findIndex((work) => work.id === imageId);
 
         if (index !== -1) {
-            worksData.splice(index, 1);
+            worksData.splice(index, 1); // Remove image from worksData array
 
             const modalCard = modalCards.querySelector(`[data-image-id="${imageId}"]`);
-            modalCard.remove();
+            modalCard.remove(); // Remove image from modalAdmin
 
             const galleryFigure = gallery.querySelector(`[data-image-id="${imageId}"]`);
-            galleryFigure.remove();
+            galleryFigure.remove(); // Remove image from gallery
         }
 
         await deleteImageAPI(imageId);
@@ -235,15 +235,15 @@ async function deleteImageAPI(imageId) {
 
 // Create confirmation message DOM element
 const confirmationMessage = document.createElement("div");
-confirmationMessage.id = "confirmationMessage";
-const modalForm = document.getElementById("modalForm");
+confirmationMessage.id = "confirmationMessage"; // Set id
+const modalForm = document.getElementById("modalForm"); 
 modalForm.appendChild(confirmationMessage);
 
 // Confirmation message for image upload to API
 function showConfirmationMessage(message, imageUrl, title) {
     const confirmationMessage = document.getElementById("confirmationMessage");
-    confirmationMessage.textContent = message;
-    confirmationMessage.style.display = "flex"; // Pour le rendre visible
+    confirmationMessage.textContent = message; // Set message content
+    confirmationMessage.style.display = "flex"; // Display message
 
     // Display a message for X seconds
     setTimeout(function() {
@@ -265,10 +265,10 @@ function updateGallery(imageUrl, title) {
     const newFigure = document.createElement("figure");
 
     const newImage = document.createElement("img");
-    newImage.src = imageUrl;
+    newImage.src = imageUrl; // Set image source
 
     const newLegend = document.createElement("figcaption");
-    newLegend.innerText = title;
+    newLegend.innerText = title; // Set image title
 
     // Add new image to the DOM
     newFigure.appendChild(newImage);
@@ -281,13 +281,13 @@ function restoreCardAddphotoContent() {
     const cardAddphoto = document.getElementById("cardAddphoto");
     const children = cardAddphoto.children;
 
-    for (let i = 0; i < children.length; i++) {
-        if (children[i].id !== "imagePreview") {
-            children[i].style.display = "flex";
+    for (let i = 0; i < children.length; i++) { 
+        if (children[i].id !== "imagePreview") { // If child is not imagePreview
+            children[i].style.display = "flex"; // Display it
         }
     }
     const imageInput = document.getElementById("image");
-    imageInput.style.display = "none";
+    imageInput.style.display = "none"; // Hide image input
 }
 
 const imageUploadForm = document.getElementById("imageUploadForm");
@@ -311,9 +311,9 @@ imageUploadForm.addEventListener("submit", async (e) => {
 
         // Create a FormData object to send the data
         const data = new FormData();
-        data.append("title", title);
-        data.append("image", imageFile, imageFile.name);
-        data.append("category", categoryId);
+        data.append("title", title); // Add title to data
+        data.append("image", imageFile, imageFile.name); // Add image to data
+        data.append("category", categoryId); // Add category to data
 
         // Call addImageAPI function to add image to API
         try {
@@ -326,7 +326,7 @@ imageUploadForm.addEventListener("submit", async (e) => {
             });
 
             if (response.ok) {
-                showConfirmationMessage("L'image a été ajoutée avec succès.", URL.createObjectURL(imageFile), title);
+                showConfirmationMessage("L'image a été ajoutée avec succès.", URL.createObjectURL(imageFile), title); 
                 displayImagesInModal();
 
                 // Clear the form and reset the image preview
@@ -404,7 +404,6 @@ function showPreview(event) {
             imagePreviewContainer.style.display = "flex";
         } else {
             alert("Le fichier est trop volumineux. Veuillez sélectionner un fichier de moins de 4 Mo.");
-            // Erase the file input field (clear form)
             event.target.value = "";
         }
     }
@@ -430,7 +429,7 @@ function checkFields() {
     const titleFilled = titleInput.value.trim() !== "";
     const categoryFilled = categoryInput.value.trim() !== "";
 
-    // Enable the "Valider" button if all fields are filled, otherwise, disable it
+    // Enable color on the "Valider" button if all fields are filled, otherwise, disable it
     if (imageFilled && titleFilled && categoryFilled) {
         button.classList.add("active");
     } else {
