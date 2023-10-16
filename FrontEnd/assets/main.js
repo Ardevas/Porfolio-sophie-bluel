@@ -276,6 +276,20 @@ function updateGallery(imageUrl, title) {
     gallery.appendChild(newFigure);
 }
 
+// Function to restore the content of "Ajouter une photo" card
+function restoreCardAddphotoContent() {
+    const cardAddphoto = document.getElementById("cardAddphoto");
+    const children = cardAddphoto.children;
+
+    for (let i = 0; i < children.length; i++) {
+        if (children[i].id !== "imagePreview") {
+            children[i].style.display = "flex";
+        }
+    }
+    const imageInput = document.getElementById("image");
+    imageInput.style.display = "none";
+}
+
 const imageUploadForm = document.getElementById("imageUploadForm");
 
 imageUploadForm.addEventListener("submit", async (e) => {
@@ -314,6 +328,16 @@ imageUploadForm.addEventListener("submit", async (e) => {
             if (response.ok) {
                 showConfirmationMessage("L'image a été ajoutée avec succès.", URL.createObjectURL(imageFile), title);
                 displayImagesInModal();
+
+                // Clear the form and reset the image preview
+                imageUploadForm.reset();
+                document.getElementById("imagePreview").src = "";
+                document.getElementById("imagePreview").style.display = "none";
+                titleInput.value = "";
+                categoryInput.value = "";
+
+                // Restore the content of the "Ajouter une photo" card
+                restoreCardAddphotoContent();
             } else {
                 console.error("Error adding image to API.");
             }
@@ -357,24 +381,32 @@ fileInput.addEventListener("change", showPreview);
 
 // Define showPreview function
 function showPreview(event) {
-    if (event.target.files.length > 0 && event.target.files.size < 4194304) {
-        const src = URL.createObjectURL(event.target.files[0]);
-        const preview = document.getElementById("imagePreview");
-        const cardAddphoto = document.getElementById("cardAddphoto");
-        const imagePreviewContainer = document.getElementById("imagePreviewContainer");
+    if (event.target.files.length > 0) {
+        const selectedFile = event.target.files[0];
 
-        // Display imagePreview
-        preview.src = src;
-        preview.style.display = "block";
+        if (selectedFile.size < 4000000) {
+            const src = URL.createObjectURL(selectedFile);
+            const preview = document.getElementById("imagePreview");
+            const cardAddphoto = document.getElementById("cardAddphoto");
+            const imagePreviewContainer = document.getElementById("imagePreviewContainer");
 
-        // Hide children cardAddphoto text and icon
-        const children = cardAddphoto.children;
-        for (i = 0; i < children.length; i++) {
-            if (children[i].id !== "imagePreview") {
-                children[i].style.display = "none";
+            // Display imagePreview
+            preview.src = src;
+            preview.style.display = "block";
+
+            // Hide children cardAddphoto text and icon
+            const children = cardAddphoto.children;
+            for (i = 0; i < children.length; i++) {
+                if (children[i].id !== "imagePreview") {
+                    children[i].style.display = "none";
+                }
             }
+            imagePreviewContainer.style.display = "flex";
+        } else {
+            alert("Le fichier est trop volumineux. Veuillez sélectionner un fichier de moins de 4 Mo.");
+            // Erase the file input field (clear form)
+            event.target.value = "";
         }
-        imagePreviewContainer.style.display = "flex";
     }
 }
 

@@ -419,6 +419,7 @@ footer nav li {
   position: relative;
   bottom: 0.4rem;
   margin-bottom: 1rem;
+  justify-content: center;
 }
 #imagePreviewContainer {
   overflow: hidden;
