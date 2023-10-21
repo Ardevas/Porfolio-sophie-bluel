@@ -78,6 +78,30 @@ async function fetchCategories() {
 
 fetchCategories();
 
+// Categories event listener function
+const galleryCategories = menu.querySelectorAll("li[id]");
+function categoriesEventListeners() {
+    galleryCategories.forEach((li) => {
+        li.addEventListener("click", function(e) {
+            e.preventDefault();
+            const clickedCategoryId = li.id;
+
+            // If "All" is clicked, set selectedCategoryId to "all"
+            if (clickedCategoryId === "all") {
+                selectedCategoryId = "all";
+            // Find matching category in categoriesId
+            } else {
+                const matchedCategory = categoriesId.find((category) => category.id.toString() === clickedCategoryId);
+                if (matchedCategory) {
+                    selectedCategoryId = matchedCategory.id;
+                }
+            }
+
+            displayImagesByCategory();
+        });
+    });
+}
+
 // Function to fetch works data from API
 async function fetchWorksData() {
     try {
@@ -93,6 +117,26 @@ async function fetchWorksData() {
 }
 
 fetchWorksData();
+
+// Check if user is logged in
+const token = sessionStorage.getItem("token");
+function loggedIn() {
+    // Return true if token is not null
+    return token !== null;
+}
+
+// Logout function
+function logoutButton() {
+    const login = document.querySelector(".login");
+    // Change textContent of login button
+    login.textContent = "logout";
+    login.addEventListener("click", (e) => {
+        e.preventDefault();
+        // Clear sessionStorage and reload page
+        sessionStorage.clear();
+        window.location.reload();
+    });
+}
 
 // Display images by category function
 const gallery = document.querySelector(".gallery");
@@ -119,50 +163,6 @@ function displayImagesByCategory() {
             figure.appendChild(galleryLegend);
         }
     });
-}
-
-// Categories event listener function
-const galleryCategories = menu.querySelectorAll("li[id]");
-function categoriesEventListeners() {
-    galleryCategories.forEach((li) => {
-        li.addEventListener("click", function(e) {
-            e.preventDefault();
-            const clickedCategoryId = li.id;
-
-            // If "All" is clicked, set selectedCategoryId to "all"
-            if (clickedCategoryId === "all") {
-                selectedCategoryId = "all";
-            // Find matching category in categoriesId
-            } else {
-                const matchedCategory = categoriesId.find((category) => category.id.toString() === clickedCategoryId);
-                if (matchedCategory) {
-                    selectedCategoryId = matchedCategory.id;
-                }
-            }
-
-            displayImagesByCategory();
-        });
-    });
-}
-
-// Logout function
-function logoutButton() {
-    const login = document.querySelector(".login");
-    // Change textContent of login button
-    login.textContent = "logout";
-    login.addEventListener("click", (e) => {
-        e.preventDefault();
-        // Clear sessionStorage and reload page
-        sessionStorage.clear();
-        window.location.reload();
-    });
-}
-
-// Check if user is logged in
-const token = sessionStorage.getItem("token");
-function loggedIn() {
-    // Return true if token is not null
-    return token !== null;
 }
 
 // Display and delete images in modalAdmin
@@ -305,7 +305,7 @@ imageUploadForm.addEventListener("submit", async (e) => {
     // Find matching ID in categoriesIds
     const selectedCategory = categoriesIds.find((category) => category.name === categoryName);
 
-    // Check the category
+    // Check if category is valid
     if (selectedCategory) {
         const categoryId = selectedCategory.id;
 
@@ -326,7 +326,7 @@ imageUploadForm.addEventListener("submit", async (e) => {
             });
 
             if (response.ok) {
-                showConfirmationMessage("L'image a été ajoutée avec succès.", URL.createObjectURL(imageFile), title); 
+                showConfirmationMessage("L'image a été ajoutée avec succès.", URL.createObjectURL(imageFile), title);
                 displayImagesInModal();
 
                 // Clear the form and reset the image preview
@@ -348,7 +348,6 @@ imageUploadForm.addEventListener("submit", async (e) => {
         console.error("Category is invalid.");
     }
 });
-
 
 const editBar = document.querySelector(".editBar");
 const buttonModifier = document.querySelectorAll(".ButtonModifier");
@@ -384,7 +383,7 @@ function showPreview(event) {
     if (event.target.files.length > 0) {
         const selectedFile = event.target.files[0];
 
-        if (selectedFile.size < 4000000) {
+        if (selectedFile.size < 4194304) {
             const src = URL.createObjectURL(selectedFile);
             const preview = document.getElementById("imagePreview");
             const cardAddphoto = document.getElementById("cardAddphoto");
@@ -451,7 +450,7 @@ fileInput.addEventListener("change", function (e) {
 
     if (selectedFile) {
         // Check the file type (only jpg and png are allowed)
-        if (!/\.(jpg|jpeg|png)$/i.test(selectedFile.name)) {
+        if (!/\.(jpg|png)$/i.test(selectedFile.name)) {
             alert("Veuillez sélectionner un fichier .jpg ou .png valide.");
             // Erase the file input field (clear form)
             imageUploadForm.reset();
